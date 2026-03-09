@@ -32,11 +32,12 @@
   (do-n-times count move-char-right-same-line-impl))
 
 (define (move-char-right-same-line-impl)
-  (set-editor-count! 1)
   (define pos (cursor-position))
   (define char (rope-char-ref (get-document-as-slice) (+ 1 pos)))
   (when char
     (unless (equal? #\newline char)
+      (when (not (= (editor-count) 1))
+        (set-editor-count! 1))
       (helix.static.move_char_right))))
 
 ;; h
@@ -45,11 +46,12 @@
   (do-n-times count move-char-left-same-line-impl))
 
 (define (move-char-left-same-line-impl)
-  (set-editor-count! 1)
   (define pos (cursor-position))
   (define char (rope-char-ref (get-document-as-slice) (- pos 1)))
   (when char
     (unless (equal? #\newline char)
+      (when (not (= (editor-count) 1))
+        (set-editor-count! 1))
       (helix.static.move_char_left))))
 
 ;; k
@@ -322,11 +324,7 @@
   (define char (rope-char-ref (get-document-as-slice) pos))
   (when char
     (when (equal? #\newline char)
-      (move-char-left-same-line-impl)
-      ;; BUG: for some reason, editor-count stacks, so I have to set it to 0 before continuing?
-      ;; (e.g exiting insert mode from end of line -> 7k results in movement from 17k if below line isnt added)
-      ;; TODO: look into Helix code to see why this happens
-      (set-editor-count! 0))))
+      (move-char-left-same-line-impl))))
 
 (provide vim-undo
          vim-append-mode

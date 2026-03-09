@@ -92,32 +92,36 @@
 ;;@doc
 ;; moves left n times and sets editor count to 1
 (define (move-left-n n)
-  (set-editor-count! 1)
   (when (> n 0)
+    (when (not (= (editor-count) 1))
+      (set-editor-count! 1))
     (helix.static.move_char_left)
     (move-left-n (- n 1))))
 
 ;;@doc
 ;; moves right n times and sets editor count to 1
 (define (move-right-n n)
-  (set-editor-count! 1)
   (when (> n 0)
+    (when (not (= (editor-count) 1))
+      (set-editor-count! 1))
     (helix.static.move_char_right)
     (move-right-n (- n 1))))
 
 ;;@doc
 ;; extends left n times and sets editor count to 1
 (define (extend-left-n n)
-  (set-editor-count! 1)
   (when (> n 0)
+    (when (not (= (editor-count) 1))
+      (set-editor-count! 1))
     (helix.static.extend_char_left)
     (extend-left-n (- n 1))))
 
 ;;@doc
 ;; extends right n times and sets editor count to 1
 (define (extend-right-n n)
-  (set-editor-count! 1)
   (when (> n 0)
+    (when (not (= (editor-count) 1))
+      (set-editor-count! 1))
     (helix.static.extend_char_right)
     (extend-right-n (- n 1))))
 

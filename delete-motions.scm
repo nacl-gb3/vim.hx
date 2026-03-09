@@ -38,7 +38,9 @@
 ;; dw
 (define (vim-delete-word)
   (vim-extend-next-word-start)
-  (set-editor-count! 1)
+  (when (not (= (editor-count) 1))
+    (set-editor-count! 1)
+  )
   (helix.static.extend_char_left)
   (helix.clipboard-yank)
   (helix.static.delete_selection))
@@ -49,7 +51,9 @@
 ;; dW
 (define (vim-delete-long-word)
   (vim-extend-next-long-word-start)
-  (set-editor-count! 1)
+  (when (not (= (editor-count) 1))
+    (set-editor-count! 1)
+  )
   (helix.static.extend_char_left)
   (helix.clipboard-yank)
   (helix.static.delete_selection))

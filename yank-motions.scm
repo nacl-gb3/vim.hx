@@ -34,7 +34,8 @@
 ;; yw
 (define (yank-word)
   (vim-extend-next-word-start)
-  (set-editor-count! 1)
+  (when (not (= (editor-count) 1))
+    (set-editor-count! 1))
   (helix.static.extend_char_left)
   (helix.static.yank_main_selection_to_clipboard)
   (helix.static.flip_selections)
@@ -43,7 +44,8 @@
 ;; yW
 (define (yank-long-word)
   (vim-extend-next-word-start)
-  (set-editor-count! 1)
+  (when (not (= (editor-count) 1))
+    (set-editor-count! 1))
   (helix.static.extend_char_left)
   (helix.static.yank_main_selection_to_clipboard)
   (helix.static.flip_selections)
@@ -75,8 +77,7 @@
   (define count (editor-count))
   (when (> count 1)
     (set-editor-count! (- count 1))
-    (helix.static.extend_line_down)
-  )
+    (helix.static.extend_line_down))
   (helix.static.extend_to_line_bounds)
   (helix.static.yank_main_selection_to_clipboard)
 

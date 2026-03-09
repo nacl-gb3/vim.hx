@@ -17,7 +17,8 @@
   (do-n-times count extend-char-right-same-line-impl))
 
 (define (extend-char-right-same-line-impl)
-  (set-editor-count! 1)
+  (when (not (= (editor-count) 1))
+    (set-editor-count! 1))
   (define pos (cursor-position))
   (define char (rope-char-ref (get-document-as-slice) (+ 1 pos)))
   (when char
@@ -30,7 +31,8 @@
   (do-n-times count extend-char-left-same-line-impl))
 
 (define (extend-char-left-same-line-impl)
-  (set-editor-count! 1)
+  (when (not (= (editor-count) 1))
+    (set-editor-count! 1))
   (define pos (cursor-position))
   (define char (rope-char-ref (get-document-as-slice) (- pos 1)))
   (when char
