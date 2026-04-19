@@ -151,31 +151,20 @@
                        (set-register! #\, (list (string #\@ #\t char)))))))
 
 (define (vim-find-till-char-impl char count)
-  (define (loop i next-char)
-    (define pos (cursor-position))
+  (define (loop i next-char count last_pos)
+    (define pos (+ 1 (cursor-position)))
     (define doc (get-document-as-slice))
     (define char (rope-char-ref doc (+ i pos)))
     (cond
-      [(equal? char #\newline) void]
-      ;; Move right n times
+      [(equal? char #\newline) last_pos]
       [(equal? char next-char)
-       (move-right-n i)
-       (helix.static.move_char_left)]
-      [else (loop (+ i 1) next-char)]))
-
-  (define (find-till-repeat count next-char)
-    (cond
-      [(zero? count) void]
-      [else
-       (define pos (cursor-position))
-       (define doc (get-document-as-slice))
-       (define char (rope-char-ref doc pos))
        (cond
-         [(equal? char next-char) (move-right-n 1)])
-       (loop 0 next-char)
-       (find-till-repeat (- count 1) next-char)]))
+         [(equal? count 1) i]
+         [else (loop (+ i 1) next-char (- count 1) i)])]
+      [else (loop (+ i 1) next-char count last_pos)]))
 
-  (find-till-repeat count char))
+  (define i (loop 0 char count 0))
+  (move-right-n i))
 
 ;; T(char)
 (define (vim-till-prev-char)
@@ -188,31 +177,20 @@
                        (set-register! #\, (list (string #\@ #\T char)))))))
 
 (define (vim-till-prev-char-impl char count)
-  (define (loop i next-char)
-    (define pos (cursor-position))
+  (define (loop i next-char count last_pos)
+    (define pos (- (cursor-position) 1))
     (define doc (get-document-as-slice))
     (define char (rope-char-ref doc (- pos i)))
     (cond
-      [(equal? char #\newline) void]
-      ;; Move right n times
+      [(equal? char #\newline) last_pos]
       [(equal? char next-char)
-       (move-left-n i)
-       (helix.static.move_char_right)]
-      [else (loop (+ i 1) next-char)]))
-
-  (define (find-till-repeat count next-char)
-    (cond
-      [(zero? count) void]
-      [else
-       (define pos (cursor-position))
-       (define doc (get-document-as-slice))
-       (define char (rope-char-ref doc pos))
        (cond
-         [(equal? char next-char) (move-left-n 1)])
-       (loop 0 next-char)
-       (find-till-repeat (- count 1) next-char)]))
+         [(equal? count 1) i]
+         [else (loop (+ i 1) next-char (- count 1) i)])]
+      [else (loop (+ i 1) next-char count last_pos)]))
 
-  (find-till-repeat count char))
+  (define i (loop 0 char count 0))
+  (move-left-n i))
 
 ;; NOTE: this is midly hacky, but the goal is to run the macro
 ;; stored in the , register, so whatever it takes...
