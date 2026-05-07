@@ -19,9 +19,18 @@
   (helix.clipboard-yank)
   (helix.static.change_selection))
 
-;; S
+;; S / cc
 (define (vim-change-line)
-  (change-impl helix.static.extend_to_line_bounds))
+  (define count (editor-count))
+  (when (> count 1)
+    (set-editor-count! (- count 1))
+    (helix.static.extend_line_down))
+  (helix.static.extend_to_line_bounds)
+  (helix.clipboard-yank)
+  (when (not (= (editor-count) 1))
+    (set-editor-count! 1)
+  )
+  (helix.static.change_selection))
 
 ;; cw
 (define (vim-change-word)

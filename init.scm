@@ -164,8 +164,8 @@
                   ("}" ":vim-goto-next-paragraph")
                   ;; NOTE: this implementation uses the , register
                   ;; so be careful with saving other things there
-                  ("," ":vim-repeat-last-find")
-                  (";" ":vim-reverse-last-find"))
+                  (";" ":vim-repeat-last-find")
+                  ("," ":vim-reverse-last-find"))
           ;; TODO: make full "reflow mode"
           ;; ("=" ":reflow"))
           ;; Select bindings

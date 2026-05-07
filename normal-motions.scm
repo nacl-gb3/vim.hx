@@ -88,7 +88,7 @@
                      (when char
                        (vim-find-next-char-impl char count)
                        ;; NOTE: this will break if default key-bind is changed
-                       (set-register! #\, (list (string #\@ #\f char)))))))
+                       (set-register! #\; (list (string #\@ #\f char)))))))
 
 (define (vim-find-next-char-impl char count)
   (define (loop i next-char)
@@ -118,7 +118,7 @@
                      (when char
                        (vim-find-prev-char-impl char count)
                        ;; NOTE: this will break if default key-bind is changed
-                       (set-register! #\, (list (string #\@ #\F char)))))))
+                       (set-register! #\; (list (string #\@ #\F char)))))))
 
 (define (vim-find-prev-char-impl char count)
   (define (loop i next-char)
@@ -148,7 +148,7 @@
                      (when char
                        (vim-find-till-char-impl char count)
                        ;; NOTE: this will break if default key-bind is changed
-                       (set-register! #\, (list (string #\@ #\t char)))))))
+                       (set-register! #\; (list (string #\@ #\t char)))))))
 
 (define (vim-find-till-char-impl char count)
   (define (loop i next-char count last_pos)
@@ -174,7 +174,7 @@
                      (when char
                        (vim-till-prev-char-impl char count)
                        ;; NOTE: this will break if default key-bind is changed
-                       (set-register! #\, (list (string #\@ #\T char)))))))
+                       (set-register! #\; (list (string #\@ #\T char)))))))
 
 (define (vim-till-prev-char-impl char count)
   (define (loop i next-char count last_pos)
@@ -197,8 +197,7 @@
 ;; ,
 (define (vim-repeat-last-find)
   (define count (editor-count))
-  (define find-macro (to-string (first (register->value #\,))))
-  (helix.echo find-macro)
+  (define find-macro (to-string (first (register->value #\;))))
   (define action (string-ref find-macro 1))
   (define char (string-ref find-macro 2))
   (cond
@@ -210,7 +209,7 @@
 ;; ;
 (define (vim-reverse-last-find)
   (define count (editor-count))
-  (define find-macro (to-string (first (register->value #\,))))
+  (define find-macro (to-string (first (register->value #\;))))
   (define action (string-ref find-macro 1))
   (define char (string-ref find-macro 2))
   (cond
